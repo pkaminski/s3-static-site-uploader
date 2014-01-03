@@ -27,6 +27,7 @@ return function ConfigRunner(){
         var remoteRunner = new RemoteRunner(config.bucketName,collection,s3Wrapper);
 
         var patterns = config.patterns;
+        var relativeDir = config.relativeDir ? config.relativeDir + '/' : '';
 
         for(var i = 0; i < patterns.length; i ++){
             globRunner.addPattern(patterns[i]);
@@ -42,16 +43,17 @@ return function ConfigRunner(){
             actions.forEach(function(obj){
                 switch(obj.action){
                     case 'delete':
-
-                        deletes.push(obj.path);
+                        var relativePath = relativeDir + obj.path;
+                        deletes.push(relativePath);
                         break;
                     case 'upload':
                         fileUtils.getContents(obj.path).then(function(contents){
-                            console.log('uploading: ' + obj.path);
-                            s3Wrapper.putObject(config.bucketName,obj.path,contents).then(function(){
-                                console.log('done uploading: ' + obj.path);
+                            var relativePath = relativeDir + obj.path;
+                            console.log('uploading: ' + relativePath);
+                            s3Wrapper.putObject(config.bucketName,relativePath,contents).then(function(){
+                                console.log('done uploading: ' + relativePath);
                             },function(reason){
-                                console.log('error uploading: ' + obj.path);
+                                console.log('error uploading: ' + relativePath);
                                 console.log(reason);
                             });
                         });
