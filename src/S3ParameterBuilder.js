@@ -24,7 +24,7 @@ var createParams = {
             Policy:policyString
         };
     },
-    putObject:function(bucketName, key, body, mimeType){
+    putObject:function(bucketName, key, body, mimeType, cacheControl){
         mimeType = mimeType || mime.lookup(key);
 
         // console.log(body);
@@ -32,7 +32,8 @@ var createParams = {
             Bucket:bucketName,
             Key: key,
             Body: body,//new Buffer(body),
-            ContentType: mimeType
+            ContentType: mimeType,
+            CacheControl: cacheControl
         };
     },
     putBucketWebsite:function(bucketName,index,error) {

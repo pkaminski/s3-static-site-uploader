@@ -56,7 +56,11 @@ describe('S3ParameterBuilder',function(){
         });
         it('allows explicit setting of the mime type',function(){
             expectPutObject('myFile.txt','text/html').to.have.property('ContentType','text/html');
-        })
+        });
+        it('allows explicit setting of cache-control', function() {
+            expect(
+                builder.putObject('myBucket', 'myKey', 'theBody', undefined, 'max-age=300')
+            ).to.have.property('CacheControl', 'max-age=300');
     });
 
     describe('listObjects',function(){

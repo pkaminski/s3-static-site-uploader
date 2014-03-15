@@ -50,7 +50,7 @@ return function ConfigRunner(){
                         fileUtils.getContents(obj.path).then(function(contents){
                             var relativePath = relativeDir + obj.path;
                             console.log('uploading: ' + relativePath);
-                            s3Wrapper.putObject(config.bucketName,relativePath,contents).then(function(){
+                            s3Wrapper.putObject(config.bucketName,relativePath,contents,undefined,config.cacheControl).then(function(){
                                 console.log('done uploading: ' + relativePath);
                             },function(reason){
                                 console.log('error uploading: ' + relativePath);
