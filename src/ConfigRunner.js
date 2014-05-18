@@ -16,6 +16,9 @@ return function ConfigRunner(){
     };
 
     this.run = function(){
+        if (config.cwd) {
+            process.chdir(config.cwd);
+        }
 
         AWS.config.loadFromPath(config.credentials);
 
@@ -32,8 +35,6 @@ return function ConfigRunner(){
         for(var i = 0; i < patterns.length; i ++){
             globRunner.addPattern(patterns[i]);
         }
-
-        //   config.patterns.forEach(globRunner.addPattern);
 
         remoteRunner.run();
         globRunner.run();
