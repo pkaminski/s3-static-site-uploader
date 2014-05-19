@@ -38,6 +38,7 @@ var createParams = {
         if (/\.gz$/.test(key)) {
             params.ContentEncoding = 'gzip';
         }
+        return params;
     },
     putBucketWebsite:function(bucketName,index,error) {
         var params = {
