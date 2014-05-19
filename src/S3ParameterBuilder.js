@@ -28,13 +28,16 @@ var createParams = {
         mimeType = mimeType || mime.lookup(key);
 
         // console.log(body);
-        return {
+        params = {
             Bucket:bucketName,
             Key: key,
             Body: body,//new Buffer(body),
             ContentType: mimeType,
             CacheControl: cacheControl
         };
+        if (/\.gz$/.test(key)) {
+            params.ContentEncoding = 'gzip';
+        }
     },
     putBucketWebsite:function(bucketName,index,error) {
         var params = {
