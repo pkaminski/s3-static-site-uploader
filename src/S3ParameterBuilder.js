@@ -25,17 +25,22 @@ var createParams = {
         };
     },
     putObject:function(bucketName, key, body, mimeType, cacheControl){
-        mimeType = mimeType || mime.lookup(key);
+        var filename = key, gzip = false;
+        params = {};
+        if (/\.gz$/.test(key)) {
+            gzip = true;
+            filename = key.replace(/\.gz$/, '');
+        }
 
         // console.log(body);
         params = {
             Bucket:bucketName,
             Key: key,
             Body: body,//new Buffer(body),
-            ContentType: mimeType,
+            ContentType: mimeType || mime.lookup(filename),
             CacheControl: cacheControl
         };
-        if (/\.gz$/.test(key)) {
+        if (gzip) {
             params.ContentEncoding = 'gzip';
         }
         return params;
