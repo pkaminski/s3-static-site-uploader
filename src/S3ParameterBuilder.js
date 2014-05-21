@@ -31,13 +31,17 @@ var createParams = {
             gzip = true;
             filename = key.replace(/\.gz$/, '');
         }
+        mimeType = mimeType || mime.lookup(filename);
+        if (/^text\//.test(mimeType) || mimeType === 'application/javascript') {
+            mimeType += '; charset=utf-8';
+        }
 
         // console.log(body);
         params = {
             Bucket:bucketName,
             Key: key,
-            Body: body,//new Buffer(body),
-            ContentType: mimeType || mime.lookup(filename),
+            Body: body,
+            ContentType: mimeType,
             CacheControl: cacheControl
         };
         if (gzip) {
